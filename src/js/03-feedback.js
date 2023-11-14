@@ -12,12 +12,12 @@ const fillContactFormField = () => {
     return;
   }
 
-  console.log(userDataFromLS);
-  console.log(contactFormEl.elements);
-
   for (const key in userDataFromLS) {
     if (userDataFromLS.hasOwnProperty(key)) {
       contactFormEl.elements[key].value = userDataFromLS[key];
+      if (userDataFromLS[key]) {
+        userData[key] = userDataFromLS[key];
+      }
     }
   }
 };
@@ -25,20 +25,28 @@ const fillContactFormField = () => {
 fillContactFormField();
 
 const onContactFormFieldChange = ({ target: contactFormField }) => {
-    const contactFormFieldValue = contactFormField.value;
-    const contactFormFieldName = contactFormField.name;
+  const contactFormFieldValue = contactFormField.value;
+  const contactFormFieldName = contactFormField.name;
+  console.log('userData: ', userData);
 
-    userData[contactFormFieldName] = contactFormFieldValue;
+  userData[contactFormFieldName] = contactFormFieldValue;
 
-    localStorage.setItem('feedback-form-state', JSON.stringify(userData));
+  localStorage.setItem('feedback-form-state', JSON.stringify(userData));
 };
 
 const onContactFormSubmit = event => {
   event.preventDefault();
 
+  console.log(userData);
+
   contactFormEl.reset();
   localStorage.removeItem('feedback-form-state');
+
+  userData = {};
 };
 
-contactFormEl.addEventListener('input', throttle(onContactFormFieldChange, 500));
+contactFormEl.addEventListener(
+  'input',
+  throttle(onContactFormFieldChange, 500)
+);
 contactFormEl.addEventListener('submit', onContactFormSubmit);
