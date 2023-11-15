@@ -1,7 +1,7 @@
 import throttle from 'lodash.throttle';
 
 const contactFormEl = document.querySelector('.feedback-form');
-const userData = {};
+let userData = {};
 
 const fillContactFormField = () => {
   const userDataFromLS = JSON.parse(
